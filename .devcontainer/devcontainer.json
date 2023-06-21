@@ -6,7 +6,7 @@
 
 	// Use this environment variable if you need to bind mount your local source code into a new container.
 	"remoteEnv": {
-		"../../CompProg": "/atcoder_python"
+		"../../CompProg": "/CompProg"
 	},
 
 	// Set *default* container specific settings.json values on container create.
