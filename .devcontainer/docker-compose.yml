@@ -6,4 +6,4 @@ services:
     container_name: atcoder
     tty: true
     volumes:
-      - ../../CompProg:/CompProg
+      - /C/Users/ullau/Documents/CompProg:/CompProg
