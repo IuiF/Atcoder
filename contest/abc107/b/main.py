@@ -7,16 +7,22 @@ for _ in range(H):
         continue
     S.append(tmp)
 
-print(S)
-
 rm_columns = []
 
 for i in range(W):
     if S[0][i] == ".":
-        for j in range(1, H):
+        for j in range(H):
             if S[j][i] == "#":
                 break
             elif S[j][i] == "." and j == H - 1:
                 rm_columns.append(i)
 
-print(rm_columns)
+rm_columns.sort(reverse=True)
+
+for row in S:
+    for column in rm_columns:
+        del row[column]
+
+
+for row in S:
+    print(*row, sep="")
