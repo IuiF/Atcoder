@@ -1,14 +1,10 @@
-from decimal import Decimal, getcontext
-
-
 N = int(input())
 ans = []
 
-getcontext().prec = 26
 
 for i in range(1, N + 1):
-    a, b = map(Decimal, input().split())
-    success_rate = a / (a + b)
+    a, b = map(int, input().split())
+    success_rate = a * 10**30 // (a + b)
     ans.append((success_rate, i))
 
 ans.sort(key=lambda x: (-x[0], x[1]))
