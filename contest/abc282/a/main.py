@@ -1,13 +1,7 @@
-A, B = map(int, input().split())
+K = int(input())
 ans = ""
-i = 1
-while True:
-    if B // 2**i == 0:
-        break
-    elif B % 2**i == 1:
-        ans += "1"
-    else:
-        ans += "0"
-    i += 1
 
-print(ans[::-1])
+for i in range(K):
+    ans += chr(i + ord("A"))
+
+print(ans)
