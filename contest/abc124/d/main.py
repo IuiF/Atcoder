@@ -30,11 +30,11 @@ while True:
         one_list.append(count)
         total += count
 
-        if len(zero_list) > K:
-            total -= zero_list.pop(0) + one_list.pop(0)
+    if len(zero_list) > K:
+        total -= zero_list.pop(0) + one_list.pop(0)
 
-        if len(zero_list) <= K:
-            ans = max(ans, total)
+    if len(zero_list) <= K:
+        ans = max(ans, total)
 
     if p == len(S):
         break
