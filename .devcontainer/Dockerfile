@@ -12,12 +12,12 @@ ARG GROUPNAME=${USERNAME}
 ARG USER_UID=1000
 ARG USER_GID=${USER_UID}
 
+RUN groupadd --gid ${USER_GID} ${GROUPNAME} && \
+    useradd -s /bin/bash --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME}
+
 # インフラを整備
 RUN apt-get update && \
     apt-get install -y zsh time tzdata tree git curl
-
-# デフォルトシェルをZ shellにする
-RUN chsh -s /bin/zsh
 
 # C++, Python3, PyPy3の3つの環境想定
 RUN apt-get update && \
@@ -52,3 +52,7 @@ RUN npm install -g atcoder-cli@2.2.0
 # # AHC用のRustのinstall
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 ENV PATH $PATH:/home/root/.cargo/bin
+
+# デフォルトシェルをZ shellにする
+SHELL ["/bin/zsh", "-c"]
+CMD ["/bin/zsh"]

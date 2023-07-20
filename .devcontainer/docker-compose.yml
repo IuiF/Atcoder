@@ -7,3 +7,4 @@ services:
     tty: true
     volumes:
       - ../../CompProg:/CompProg
+      - ./.zshrc:/home/vscode/.zshrc
