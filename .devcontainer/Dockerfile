@@ -1,27 +1,54 @@
-FROM python:3.8.8
+# Ubuntuの公式コンテナを軸に環境構築
+# 22.04ではaptからpython3.8が入っていなかったので20.04で固定する
+FROM ubuntu:20.04
+
+# インタラクティブモードにならないようにする
+ARG DEBIAN_FRONTEND=noninteractive
+# タイムゾーンを日本に設定
+ENV TZ=Asia/Tokyo
 
 ARG USERNAME=vscode
 ARG GROUPNAME=${USERNAME}
 ARG USER_UID=1000
 ARG USER_GID=${USER_UID}
 
-RUN apt-get update && apt-get install -y apt-utils && \
-    groupadd --gid ${USER_GID} ${GROUPNAME} && \
-    useradd -s /bin/bash --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} && \
-    apt-get -y install sudo && \
-    echo ${USERNAME} ALL=\(ALL\) NOPASSWD:ALL > /etc/sudoers.d/${USERNAME} && \
-    chmod 0440 /etc/sudoers.d/${USERNAME}
+# インフラを整備
+RUN apt-get update && \
+    apt-get install -y zsh time tzdata tree git curl
 
-# Python3, PyPy3の環境想定
-RUN apt-get update && apt-get install -y python3-pip pypy3 && \
-    curl -sL https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y nodejs && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+# デフォルトシェルをZ shellにする
+RUN chsh -s /bin/zsh
 
-# pythonライブラリをインストール
-COPY requirements.txt /tmp/
-RUN python -m pip install --upgrade pip && \
-    pip install -r /tmp/requirements.txt
+# C++, Python3, PyPy3の3つの環境想定
+RUN apt-get update && \
+    apt-get install -y gcc-9 g++-9 python3.8 python3-pip pypy3 nodejs npm
 
-# コンテスト補助ツールをインストール
-RUN pip3 install online-judge-tools
-RUN npm install -g atcoder-cli
+# 一般的なコマンドで使えるように設定
+# e.g. python3.8 main.py => python main.py
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 30 && \
+    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 30 && \
+    update-alternatives --install /usr/bin/python python /usr/bin/python3.8 30 && \
+    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 30 && \
+    update-alternatives --install /usr/bin/pypy pypy /usr/bin/pypy3 30 && \
+    update-alternatives --install /usr/bin/node node /usr/bin/nodejs 30
+
+# AtCoderでも使えるPythonライブラリをインストール
+RUN pip install -U pip && \
+    pip install numpy==1.18.2 scipy==1.4.1 scikit-learn==0.22.2.post1 \
+    numba==0.48.0 networkx==2.4
+
+# C++でAtCoder Library(ACL)を使えるようにする
+RUN git clone https://github.com/atcoder/ac-library.git /lib/ac-library
+ENV CPLUS_INCLUDE_PATH /lib/ac-library
+
+# Pythonでの競技プログラミング用データ構造をインストール
+RUN pip install git+https://github.com/hinamimi/ac-library-python && \
+    pip install git+https://github.com/hinamimi/python-sortedcontainers
+
+# コンテスト補助アプリケーションをインストール
+RUN pip install online-judge-tools==11.5.1
+RUN npm install -g atcoder-cli@2.2.0
+
+# # AHC用のRustのinstall
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+ENV PATH $PATH:/home/root/.cargo/bin
