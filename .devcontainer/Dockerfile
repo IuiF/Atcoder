@@ -50,6 +50,11 @@ RUN npm install -g atcoder-cli@2.2.0
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 ENV PATH $PATH:/home/root/.cargo/bin
 
+# entruypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
 # Set default shell to Z shell
 SHELL ["/bin/zsh", "-c"]
 CMD ["/bin/zsh"]

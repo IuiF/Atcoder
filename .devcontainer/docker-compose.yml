@@ -8,3 +8,4 @@ services:
     volumes:
       - ../../CompProg:/CompProg
       - ./.zshrc:/home/vscode/.zshrc
+      - ./.zshrc:/root/.zshrc
