@@ -1,0 +1,5 @@
+n = int(input())
+x = list(map(int, input().split()))
+x.sort()
+ans = sum(x[n:-n]) / (len(x) - 2 * n)
+print(ans)
