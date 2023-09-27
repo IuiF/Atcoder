@@ -1,0 +1,6 @@
+st = set()
+st.add(input())
+st.add(input())
+st.add(input())
+st.add(input())
+print("Yes" if len(st) == 4 else "No")
