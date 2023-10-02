@@ -64,7 +64,7 @@ alias test2='oj t -c "python3 main.py" -d ./tests/'
 # PyPy3での解答提出
 alias sb='acc s main.py -- --guess-python-interpreter pypy'
 # Pythonでの解答提出
-alias sb2='acc s main.py'
+alias sb2='acc s main.py -- -l 5055'  #'acc s main.py'
 
 # コンテストフォルダへ移動
 alias c='cd contest'
