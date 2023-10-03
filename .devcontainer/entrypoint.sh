@@ -1,6 +1,6 @@
 #!/bin/sh
 
-FLAG="/home/vscode/.acc-flag"
+FLAG="~/vscode/.acc-flag"
 
 if [ ! -f $FLAG ]; then
     # 初回起動時のみに実行するコマンド
