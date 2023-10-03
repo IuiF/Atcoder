@@ -1,0 +1,5 @@
+n = int(input())
+s = set([int(input()) for _ in range(n)])
+L = list(s)
+L.sort()
+print(L[-2])
