@@ -7,7 +7,6 @@ for i in range(n):
     d[s] = c
 d = sorted(d.items())
 ans = 0
-
 for i, j in d:
     if j > 1:
         new_s = 2 * i

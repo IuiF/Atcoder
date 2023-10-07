@@ -14,7 +14,6 @@ for j in range(n):
     sc += j + 1
     s.append(sc)
     t.append(sp)
-
 MAX = max(s)
 for i in range(n):
     if s[i] == MAX:

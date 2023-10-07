@@ -15,7 +15,6 @@ for i in range(1, x + 1):
         else:
             m[i] += m[i - j] * pow(n, -1, MOD)
         m[i] %= MOD
-
 ans = 0
 for i in range(f):
     if x - i < 0:
