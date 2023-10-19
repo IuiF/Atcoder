@@ -3,6 +3,14 @@
 # Update the package list and upgrade the packages
 sudo apt update && sudo apt upgrade -y
 
+# Install curl
+sudo apt install curl -y
+
+# Install zsh and oh-my-zsh
+sudo apt install zsh -y
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+cp .zshrc ~/
+
 # Install gcc-9 and g++-9
 sudo apt install gcc-9 g++-9 -y
 
@@ -17,14 +25,6 @@ sudo apt install python3-pip -y
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# Install curl
-sudo apt install curl -y
-
-# Install zsh and oh-my-zsh
-sudo apt install zsh -y
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-cp .zshrc ~/
-
 # Install git and tree
 sudo apt install git -y
 sudo apt install tree -y
@@ -36,6 +36,10 @@ pip install git+https://github.com/hinamimi/python-sortedcontainers
 
 # CPLUS_INCLUDE_PATH
 echo 'export CPLUS_INCLUDE_PATH=/lib/ac-library' >> ~/.zshrc
+
+# Install nodejs and npm
+sudo apt install nodejs -y
+sudo apt install npm -y
 
 # Install contest support applications
 pip install online-judge-tools==11.5.1
