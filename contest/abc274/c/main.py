@@ -1,8 +1,8 @@
 n = int(input())
 a = list(map(int, input().split()))
-print(0)
-for i in a:
-    a = i * 2
-    b = i * 2 + 1
-    print(len(bin(a)[2:]) - 1)
-    print(len(bin(b)[2:]) - 1)
+ans = [0] * (2 * n + 1)
+for i, j in enumerate(a):
+    ans[2 * i + 1] = ans[j - 1] + 1
+    ans[2 * i + 2] = ans[j - 1] + 1
+
+print(*ans, sep="\n")
