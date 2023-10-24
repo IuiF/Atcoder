@@ -1,16 +1,13 @@
-from math import factorial
+from itertools import permutations
 
 
-def perm_order(perm):
-    order = 0
-    for i in range(len(perm)):
-        smaller = sum(x < perm[i] for x in perm[i + 1 :])
-        order += smaller * factorial(len(perm) - i - 1)
-    return order + 1
+n = int(input())
+ar = [i + 1 for i in range(n)]
+all_ar = list(permutations(ar))
+all_ar.sort()
+
+a = tuple(map(int, input().split()))
+b = tuple(map(int, input().split()))
 
 
-N = int(input())
-P = list(map(int, input().split()))
-Q = list(map(int, input().split()))
-
-print(abs(perm_order(P) - perm_order(Q)))
+print(abs(all_ar.index(a) - all_ar.index(b)))
