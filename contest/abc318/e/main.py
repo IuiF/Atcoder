@@ -1,29 +1,18 @@
 from collections import defaultdict
-import itertools
 
 
-N = int(input())
-A = list(map(int, input().split()))
+n = int(input())
+a = list(map(int, input().split()))
 ans = 0
-D = defaultdict(list)
-for i in range(N):
-    D[A[i]].append(i)
+dic = defaultdict(list)
 
-for k, v in D.items():
-    if len(v) > 1:
-        comb = list(itertools.combinations(v, 2))
-        a, b = 10**10, 10**10
-        tmp = 0
+for i in range(n):
+    len_ai = len(dic[a[i]])
+    for j in dic[a[i]]:
+        ans += i - j - len_ai
+        len_ai -= 1
 
-        for i, j in comb:
-            if j > b:
-                tmp += 1
-            else:
-                tmp = 0
-            a = i
-            b = j
-            ans += j - i - 1
-            ans -= tmp
+    dic[a[i]].append(i)
 
 
 print(ans)
