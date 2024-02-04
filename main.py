@@ -9,8 +9,8 @@ Articles = {}  # 記事データ管理用辞書
 """
 key: 記事ID
 - "Datetime" : Datetimeオブジェクト
-- "ユーザーID": 記事を投稿したユーザーのID
-- "記事タイトル": 記事のタイトル
+- "UserID": 記事を投稿したユーザーのID
+- "ArticleTitle": 記事のタイトル
 - "CommentIDs": コメントIDを保持する配列
 - "IsActive": 記事が現在アクティブかどうかを示すbool
 """
@@ -19,7 +19,7 @@ Comments = {}  # コメントデータ管理用辞書
 """
 key: コメントID
 - "Datetime" : Datetimeオブジェクト
-- "ユーザーID": コメントを投稿したユーザーのID
+- "UserID": コメントを投稿したユーザーのID
 - "記事ID": 記事のID
 - "本文": コメント本文
 - "IsActive": True,  # コメントが現在アクティブかどうかを示すbool
@@ -33,7 +33,7 @@ for user, permission in u:
         "permission": True if permission == "1" else False,
     }  # ユーザーデータ管理用辞書
 """
-key: ユーザーID
+key: UserID
 - "view_history": 閲覧した記事IDを保持する配列 (ID, 時刻)
 - "comment": コメントIDの履歴を保持する配列
 - "permission": ユーザーの権限を示すbool
@@ -62,8 +62,8 @@ for query in q:
             # 記事を辞書で管理
             Articles[query[4]] = {
                 "Datetime": Datetime,
-                "ユーザーID": query[3],
-                "記事タイトル": query[5],
+                "UserID": query[3],
+                "ArticleTitle": query[5],
                 "CommentIDs": [],  # コメントのIDリスト
                 "IsActive": True,  # 記事の存在フラグ
             }
@@ -73,11 +73,11 @@ for query in q:
     elif query[0] == "delete_article:":
 
         # 記事の存在をIDでチェック
-        if query[4] not in Articles:
+        if query[4] not in Articles or not Articles[query[4]]["IsActive"]:
             print("delete_article: not found")
 
         # ユーザーIDが記事の投稿者と一致するかチェック
-        elif query[3] != Articles[query[4]]["ユーザーID"]:
+        elif query[3] != Articles[query[4]]["UserID"]:
             print("delete_article: unauthorized")
 
         # 記事削除
@@ -118,7 +118,7 @@ for query in q:
         Datetime = datetime.strptime(query[1] + " " + query[2], "%Y-%m-%d %H:%M:%S")
 
         # 記事の存在をIDでチェック
-        if query[4] not in Articles:
+        if query[4] not in Articles or not Articles[query[4]]["IsActive"]:
             print("post_comment: article not found")
 
         # コメントIDがすでに投稿されているかの確認
@@ -131,7 +131,7 @@ for query in q:
 
             Comments[query[5]] = {
                 "Datetime": Datetime,
-                "ユーザーID": query[3],
+                "UserID": query[3],
                 "記事ID": query[4],
                 "本文": query[6],
                 "IsActive": True,  # コメントの存在フラグ
@@ -147,17 +147,17 @@ for query in q:
     elif query[0] == "delete_comment:":
 
         # コメントの存在をIDでチェック
-        if query[4] not in Comments:
+        if query[4] not in Comments or not Comments[query[4]]["IsActive"]:
             print("delete_comment: not found")
 
         # ユーザIDが投稿ユーザIDと一致しているかを確認
-        elif query[3] != Comments[query[4]]["ユーザーID"]:
+        elif query[3] != Comments[query[4]]["UserID"]:
             print("delete_comment: unauthorized")
 
         # コメント削除
         else:
             print(f"delete_comment: {query[4]} {Comments[query[4]]['本文']}")
-            Comments[query[4]]["IsActive"] = False  # 記事の存在フラグを無効化
+            Comments[query[4]]["IsActive"] = False  # コメントの存在フラグを無効化
 
     # ユーザー情報表示クエリ
     # user: {ユーザー ID:query[1]} {種類:query[2]}
@@ -182,7 +182,7 @@ for query in q:
                         break
             for i, article in enumerate(tmp):
                 print(
-                    f"{i+1}. {article[0]} {Articles[article[0]]['記事タイトル']} ({article[1]})"
+                    f"{i+1}. {article[0]} {Articles[article[0]]['ArticleTitle']} ({article[1]})"
                 )
 
         # コメント履歴
